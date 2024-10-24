@@ -94,6 +94,50 @@ const menus: Menu[] = [
         path: '/transaksi-add'
       }
     ]
+  },
+  {
+    label: 'components',
+    icon: 'solar:case-bold-duotone',
+    children: [
+      {
+        label: 'form',
+        path: '/transaksi'
+      },
+      {
+        label: 'tabel',
+        path: '/transaksi-add'
+      },
+      {
+        label: 'modal',
+        path: '/transaksi-add'
+      },
+      {
+        label: 'card',
+        path: '/transaksi-add'
+      }
+    ]
+  },
+  {
+    label: 'Pages',
+    icon: 'solar:file-bold-duotone',
+    children: [
+      {
+        label: 'login 1',
+        path: '/login-one'
+      },
+      {
+        label: 'login 2',
+        path: '/login-two'
+      },
+      {
+        label: '404',
+        path: '/login-two'
+      },
+      {
+        label: '500',
+        path: '/login-two'
+      }
+    ]
   }
 ];
 
