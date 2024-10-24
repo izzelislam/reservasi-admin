@@ -14,12 +14,6 @@
 
 </div>
 
----
-
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
-
 ## 📝 ScreenShoot
 <img src="./demo/1.png" alt="drawing" width="600"/>
 
