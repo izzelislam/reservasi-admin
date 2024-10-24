@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .menu-icon {
+    @apply text-gray-700 text-2xl;
+  }
+  .menu-sibgle {
+    @apply flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 ;
+  }
+  .menu-sibgle p {
+    @apply text-gray-700;
+  }
+  
+  .menu-multi {
+    @apply flex items-center justify-between gap-2 p-3 hover:bg-gray-100 rounded-lg cursor-pointer;
+  }
+  .menu-multi-child {
+    @apply bg-gray-50 overflow-hidden transition-all duration-200 rounded-lg;
+  }
+
+  .menu-multi-child ul {
+    @apply flex flex-col gap-2 px-4 py-2 mt-2;
+  }
+  .menu-multi-child ul li p{
+    @apply text-gray-700 text-sm;
+  }
+
+  .menu-multi-child ul li {
+    @apply flex items-center py-1;
+  }
+
+  .menu-multi .arrow {
+    @apply text-gray-700 text-xl transition-all duration-200;
+  }
+  .menu-multi .title {
+    @apply flex items-center gap-2;
+  }
+  .menu-multi .title p{
+    @apply text-gray-700;
+  }
+
+  .no-arrow summary {
+    @apply list-none;
+  }
+}
