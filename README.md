@@ -16,6 +16,7 @@
 
 ## 📝 ScreenShoot
 <img src="./demo/1.png" alt="drawing" width="600"/>
+<img src="./demo/2.png" alt="drawing" width="600"/>
 
 ## 📝 Table of Contents
 
