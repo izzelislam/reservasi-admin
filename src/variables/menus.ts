@@ -101,7 +101,7 @@ const menus: Menu[] = [
     children: [
       {
         label: 'form',
-        path: '/transaksi'
+        path: '/form'
       },
       {
         label: 'tabel',
