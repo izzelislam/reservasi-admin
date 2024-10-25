@@ -105,7 +105,7 @@ const menus: Menu[] = [
       },
       {
         label: 'tabel',
-        path: '/transaksi-add'
+        path: '/table'
       },
       {
         label: 'modal',

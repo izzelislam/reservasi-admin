@@ -49,7 +49,7 @@ const Layout: React.FC<Props> = ({children} : Props) => {
     <>
       <div className='flex'>
         {/* sidebar */}
-        <div className={`box-border bg-white dark:bg-gray-950 h-screen  overflow-hidden transition-all duration-200 sha ${isSidebarOpen || isMobile ? 'w-[280px] p-6' : 'w-[0px]'}`}>
+        <div className={`z-10 sticky top-0 box-border bg-white dark:bg-gray-950 h-screen  overflow-hidden transition-all duration-200 sha ${isSidebarOpen || isMobile ? 'w-[280px] p-6' : 'w-[0px]'}`}>
           <div className='p-5 mb-3'>
             <Link to={"/"}>
               <img src="/src/assets/img/logo.png" className='object-cover object-center w-36' alt="" />
@@ -88,9 +88,9 @@ const Layout: React.FC<Props> = ({children} : Props) => {
         </div>
         {/* end sidebar */}
 
-        <div className='bg-slate-200 h-screen flex-1 dark:bg-gray-900'>
+        <div className='bg-slate-200 min-h-screen flex-1 dark:bg-gray-900'>
           {/* navbar */}
-          <div className='flex justify-between items-center bg-white w-full h-[80px] px-6 dark:bg-gray-950'>
+          <div className='fixed top-0 left-0 right-0 flex justify-between items-center bg-white w-full h-[80px] px-6 dark:bg-gray-950'>
             <div>
               {
                 isSidebarOpen
@@ -162,7 +162,7 @@ const Layout: React.FC<Props> = ({children} : Props) => {
           {/* end navbar */}
 
           {/* content */}
-          <div className='p-8'>
+          <div className='p-8 overflow-auto'>
             {children}
           </div>
           {/* end content */}
