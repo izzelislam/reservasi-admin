@@ -14,7 +14,7 @@ const menus: Menu[] = [
   {
     label: 'Checkin/Out',
     icon: 'solar:inbox-archive-bold-duotone',
-    path: '/'
+    path: '/check-in'
   },
   {
     label: 'Kamar',

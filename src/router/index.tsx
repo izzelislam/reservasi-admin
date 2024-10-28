@@ -4,6 +4,7 @@ import LoginOnePage from "../views/login-one";
 import LoginTwoPage from "../views/login-two";
 import TablePage from "../views/table";
 import FormPage from "../views/form";
+import CheckInPage from "../views/checkin";
 
 
 const RouteApp: React.FC = () => {
@@ -14,6 +15,7 @@ const RouteApp: React.FC = () => {
       <Route path="/login-two" element={<LoginTwoPage />} />
       <Route path="/table" element={<TablePage />} />
       <Route path="/form" element={<FormPage />} />
+      <Route path="/check-in" element={<CheckInPage />} />
     </Routes>
   )
 }
