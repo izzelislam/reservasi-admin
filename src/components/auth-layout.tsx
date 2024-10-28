@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 type Props = {
   children: React.ReactNode
 }
 
 const AuthLayout:React.FC<Props> = ({children}: Props) => {
+
+  const [thme] = React.useState<any>(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
+
+  useEffect(() =>{
+    localStorage.setItem('theme', thme)
+    const itemStorage:any = localStorage.getItem('theme')
+    const element = document.querySelector('html')
+    if (element) {
+      element?.setAttribute('data-theme', itemStorage)
+      element?.setAttribute('class', itemStorage)
+    }
+    // set 
+  },[thme])
+
   return (
     <div className='w-full h-screen flex'>
       <div className='hidden md:w-1/2 bg-sky-400 h-screen md:flex flex-col items-center justify-center p-8 bg-cover bg-center'
