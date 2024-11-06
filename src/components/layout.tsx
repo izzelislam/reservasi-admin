@@ -4,7 +4,11 @@ import menus from '../variables/menus';
 import MenuSingle from '../components/menu-single';
 import MenuMultiple from '../components/menu-multiple';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/use-auth-store';
+import { toast } from 'react-toastify';
+import Modal from './modal';
+import Button from './button';
 
 type Props = {
   children: React.ReactNode
@@ -16,6 +20,21 @@ const Layout: React.FC<Props> = ({children} : Props) => {
   const [menuName, setMenuName] = React.useState<string>('');
   const [isSidebarOpen, setIsSidebarOpen] = React.useState<boolean>(false);
   const [thme, setTheme] = React.useState<any>(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
+  const {getProfile, user, logout} = useAuthStore()
+  const [showLogoutModal, setShowLogoutModal] = React.useState<boolean>(false);
+  const isMobile = useMediaQuery({ maxWidth: 900 });
+
+  const router = useNavigate()
+  const path  = useLocation()
+
+  useEffect(() => {
+    if (path) {
+      const pathName = path.pathname.split('/')
+      setMenuName(pathName[1])
+      setIsOpenDropdown(true)
+    }
+  }, [path])
+
 
   useEffect(() =>{
     localStorage.setItem('theme', thme)
@@ -28,10 +47,31 @@ const Layout: React.FC<Props> = ({children} : Props) => {
     // set 
   },[thme])
 
-  const isMobile = useMediaQuery({
-    query: '(min-width: 1020px)'
-  })
+  useEffect(() => {
+    init()
+  }, [])
 
+  const handleLogout = async () => {
+    try {
+      await logout()
+      toast.success('Berhasil logout')
+      router('/')
+    } catch (error:Response|any) {
+      toast.error(error.data.message)
+    }
+  }
+
+  const init = async () => {
+    try {
+      await getProfile()
+    } catch (error:Response|any) {
+      if (error.status === 401) {
+        router('/')
+      }
+      toast.error(error.data.message)
+    }
+  }
+ 
   const handleOpenDropdown = (name: string) => {
     setIsOpenDropdown(!isOpenDropdown);
     setMenuName(name);
@@ -49,11 +89,16 @@ const Layout: React.FC<Props> = ({children} : Props) => {
     <>
       <div className='flex'>
         {/* sidebar */}
-        <div className={`z-10 sticky top-0 box-border bg-white dark:bg-gray-950 h-screen  overflow-hidden transition-all duration-200 sha ${isSidebarOpen || isMobile ? 'w-[280px] p-6' : 'w-[0px]'}`}>
-          <div className='p-5 mb-3'>
+        <div className={`z-10 sticky top-0 box-border bg-white dark:bg-gray-950 h-screen  overflow-hidden transition-all duration-200  ${!isMobile ? 'w-[280px] p-6' : 'hidden'}`}>
+          <div className='p-5 mb-3 flex justify-between items-center gap-2'>
             <Link to={"/"}>
               <img src="/src/assets/img/logo.png" className='object-cover object-center w-36' alt="" />
             </Link>
+            {
+                isSidebarOpen
+                ? <Icon onClick={() => setIsSidebarOpen(!isSidebarOpen)} icon="lucide:x" className='lg:hidden text-3xl text-gray-700 cursor-pointer'/>
+                : <Icon onClick={() => setIsSidebarOpen(!isSidebarOpen)} icon="lucide:menu" className='lg:hidden text-3xl text-gray-700 cursor-pointer'/>
+              }
           </div>
 
           <ul className='w-full flex flex-col gap-1'>
@@ -66,9 +111,9 @@ const Layout: React.FC<Props> = ({children} : Props) => {
                       label={menu.label}
                       icon={menu.icon}
                       children={menu.children}
-                      handleToogle={() => handleOpenDropdown(menu.label)}
-                      isOpenDropdown={ menu.label === menuName && isOpenDropdown ? true : false}
-                      isActive={menu.label === menuName ? true : false}
+                      handleToogle={() => handleOpenDropdown(menu.name)}
+                      isOpenDropdown={ menu.name === menuName && isOpenDropdown ? true : false}
+                      isActive={menu.name === menuName ? true : false}
                     />
                   )
                 } else{
@@ -78,13 +123,57 @@ const Layout: React.FC<Props> = ({children} : Props) => {
                       label={menu.label}
                       icon={menu.icon}
                       path={menu.path}
-                      isActive={menu.label === 'Kamar' ? true : false}
+                      isActive={menu.name === menuName ? true : false}
                     />
                   )
                 }
               })
             }
           </ul>
+        </div>
+
+        <div className={`${isSidebarOpen && isMobile ? 'w-full' : 'w-[0px]'} h-[100vh] overflow-hidden bg-white fixed z-10 transition-all duration-300`}>
+          <div className='p-5 mb-3 flex justify-between items-end'>
+            {
+              isSidebarOpen
+              ? <Icon onClick={() => setIsSidebarOpen(!isSidebarOpen)} icon="lucide:x" className='lg:hidden text-3xl text-gray-700 cursor-pointer'/>
+              : <Icon onClick={() => setIsSidebarOpen(!isSidebarOpen)} icon="lucide:menu" className='lg:hidden text-3xl text-gray-700 cursor-pointer'/>
+            }
+            <Link to={"/"}>
+              <img src="/src/assets/img/logo.png" className='object-cover object-center w-36' alt="" />
+            </Link>
+          </div>
+          <div className='w-full'>
+            <ul className='w-full flex flex-col gap-1'>
+              {
+                menus.map((menu: any, index: number) => {
+                  if (menu.children) {
+                    return (
+                      <MenuMultiple
+                        key={index}
+                        label={menu.label}
+                        icon={menu.icon}
+                        children={menu.children}
+                        handleToogle={() => handleOpenDropdown(menu.name)}
+                        isOpenDropdown={ menu.name === menuName && isOpenDropdown ? true : false}
+                        isActive={menu.name === menuName ? true : false}
+                      />
+                    )
+                  } else{
+                    return (
+                      <MenuSingle
+                        key={index}
+                        label={menu.label}
+                        icon={menu.icon}
+                        path={menu.path}
+                        isActive={menu.name === menuName ? true : false}
+                      />
+                    )
+                  }
+                })
+              }
+            </ul>
+          </div>
         </div>
         {/* end sidebar */}
 
@@ -134,41 +223,54 @@ const Layout: React.FC<Props> = ({children} : Props) => {
                 </summary>
                 <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                   <li>
-                    <Link to={"/"} className='flex items-center gap-2'>
+                    <Link to={"/dashboard"} className='flex items-center gap-2'>
                       <Icon icon="solar:home-2-bold-duotone" className='text-xl' />
                       Dashboard
                     </Link>
                   </li>
                   <li>
-                    <Link to={"/"} className='flex items-center gap-2'>
-                      <Icon icon="solar:user-bold-duotone" className='text-xl' />
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"/"} className='flex items-center gap-2'>
+                    <div onClick={() => setShowLogoutModal(true)}  className='flex items-center gap-2'>
                       <Icon icon="solar:logout-2-bold-duotone" className='text-xl' />
                       Logout
-                    </Link>
+                    </div>
                   </li>
                 </ul>
               </details>
-              <div className='flex flex-col items-start'>
-                <p className='text-gray-500 text-xs'>admin</p>
-                <p className='text-gray-500 text-sm font-semibold'>JohnCena@mail.com</p>
-              </div>
+              {
+                user && (
+                  <div className='flex flex-col items-start'>
+                    <p className='text-gray-500 text-xs'>{user.role}</p>
+                    <p className='text-gray-500 text-sm font-semibold'>{user.email}</p>
+                  </div>
+                )
+              }
             </div>
           </div>
           {/* end navbar */}
 
           {/* content */}
-          <div className='p-8 overflow-auto'>
+          <div className='p-4 md:p-8'>
             {children}
           </div>
           {/* end content */}
           
         </div>
+        
       </div>
+      <Modal visible={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
+        <div className='text-center'>
+          <p className='text-xl font-semibold'>Konfirmasi Logout</p>
+          <p>Apakah anda yakin ingin keluar?</p>
+        </div>
+        <div className='flex justify-center gap-4'>
+          <div>
+            <Button icon='solar:close-square-bold-duotone' onClick={() => setShowLogoutModal(false)} title="Batal"/>
+          </div>
+          <div>
+            <Button icon='solar:logout-2-bold-duotone' bg='bg-red-600' onClick={() => handleLogout()} title='Logout'/>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }

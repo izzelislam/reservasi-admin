@@ -15,12 +15,24 @@ const data = [
 ];
 
 const index = () => {
+
+
+
   return (
     <Layout>
       <Wrapper title="Form" subtitle="input form">
+        <form>
+          
+        </form>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <CustomInput type="text" placeholder="Username" label='Username'/>
+            <CustomInput
+               type="text" 
+               placeholder="Username" 
+               label='Username'
+               
+              />
+
             <CustomSelect label="Status" placeholder="Status" value="" onChange={() => {}} options={data} />
           </div>
         </div>

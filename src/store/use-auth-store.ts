@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { UserType } from '../variables/users'
 import api from '../lib/api'
 
 type State = {
@@ -8,6 +7,7 @@ type State = {
   is_auth: boolean
   login: (data: any) => Promise<any>
   logout: () => Promise<any>
+  getProfile: () => Promise<any>
 }
 
 const initState: State = {
@@ -15,7 +15,8 @@ const initState: State = {
   user: {},
   is_auth: false,
   login: async () => {},
-  logout: async () => {}
+  logout: async () => {},
+  getProfile: async () => {}
 }
 
 export const useAuthStore = create<State>()((set) => ({
@@ -24,7 +25,7 @@ export const useAuthStore = create<State>()((set) => ({
     try {
       set({ loading: true })
       const res = await api.post('/admin/login', data)
-      set({ loading: false, user: res.data, is_auth: true })
+      set({ loading: false, is_auth: true })
       return Promise.resolve(res.data)
     } catch (error) {
       set({ loading: false })
@@ -34,8 +35,19 @@ export const useAuthStore = create<State>()((set) => ({
   logout: async () => {
     try {
       set({ loading: true })
-      const res = await api.get('/admin/logout')
+      const res = await api.post('/admin/logout')
       set({ loading: false, user: {}, is_auth: false })
+      return Promise.resolve(res.data)
+    } catch (error) {
+      set({ loading: false })
+      return Promise.reject(error)
+    }
+  },
+  getProfile: async () => {
+    try {
+      set({ loading: true })
+      const res = await api.get('/admin/me')
+      set({ loading: false, user: res.data, is_auth: true })
       return Promise.resolve(res.data)
     } catch (error) {
       set({ loading: false })

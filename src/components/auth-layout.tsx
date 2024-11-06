@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react'
+import { useAuthStore } from '../store/use-auth-store';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 type Props = {
   children: React.ReactNode
@@ -7,6 +10,9 @@ type Props = {
 const AuthLayout:React.FC<Props> = ({children}: Props) => {
 
   const [thme] = React.useState<any>(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
+
+  const {getProfile} = useAuthStore()
+  const router = useNavigate()
 
   useEffect(() =>{
     localStorage.setItem('theme', thme)
@@ -18,6 +24,25 @@ const AuthLayout:React.FC<Props> = ({children}: Props) => {
     }
     // set 
   },[thme])
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  const init = async () => {
+    try {
+      const res = await getProfile()
+      if (res) {
+        router('/dashboard')
+      }
+      toast.success("Anda sudah login")
+    } catch (error:Response|any) {
+      if (error.status === 401) {
+        router('/')
+      }
+      toast.error(error.data.message)
+    }
+  }
 
   return (
     <div className='w-full h-screen flex'>

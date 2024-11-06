@@ -1,6 +1,7 @@
 type Menu = {
   label: string;
   icon?: string;
+  name?: string;
   path?: string;
   children?: Menu[];
 }
@@ -8,137 +9,110 @@ type Menu = {
 const menus: Menu[] = [
   {
     label: 'Dashboard',
+    name : 'dashboard', 
     icon: 'solar:home-2-bold-duotone',
-    path: '/'
+    path: '/dashboard'
   },
   {
     label: 'Checkin/Out',
+    name: 'checkin',
     icon: 'solar:inbox-archive-bold-duotone',
     path: '/check-in'
   },
   {
     label: 'Kamar',
+    name: 'room',
     icon: 'solar:bed-bold-duotone',
     children: [
       {
         label: 'Daftar Kamar',
-        path: '/kamar'
+        path: '/room'
       },
       {
         label: 'Tambah Kamar',
-        path: '/kamar-add'
+        path: '/room/create'
       }
     ]
   },
   {
     label: 'Transaksi',
+    name: 'order',
     icon: 'solar:cart-3-bold-duotone',
     children: [
       {
         label: 'Transaksi',
-        path: '/transaksi'
+        path: '/order/transaction'
       },
       {
         label: 'Laporan',
-        path: '/transaksi-add'
+        path: '/order/report'
       }
     ]
   },
   {
     label: 'Komisi',
+    name: 'comission',
     icon: 'solar:money-bag-bold-duotone',
-    path: '/'
+    children: [
+      {
+        label: 'Afiliator',
+        path: '/comission/afiliator'
+      },
+      {
+        label: 'Platform',
+        path: '/comission/vendor'
+      },
+    ]
   },
   {
     label: 'Penguna',
+    name: 'user',
     icon: 'solar:users-group-rounded-bold-duotone',
     children: [
       {
         label: 'Admin',
-        path: '/transaksi'
+        path: '/user/admin'
       },
       {
         label: 'Afiliator',
-        path: '/transaksi-add'
+        path: '/user/afiliator'
       },
       {
         label: 'Pelanggan',
-        path: '/transaksi-add'
+        path: '/user/customer'
       }
     ]
   },
   {
     label: 'Post',
+    name: 'post',
     icon: 'solar:signpost-2-bold-duotone',
     children: [
       {
         label: 'Berita',
-        path: '/transaksi'
+        path: '/post/info'
       },
       {
         label: 'Kategory',
-        path: '/transaksi-add'
+        path: '/post/category'
       }
     ]
   },
-  {
-    label: 'Pengaturan',
-    icon: 'solar:settings-bold-duotone',
-    children: [
-      {
-        label: 'Kontak',
-        path: '/transaksi'
-      },
-      {
-        label: 'Sosial',
-        path: '/transaksi-add'
-      }
-    ]
-  },
-  {
-    label: 'components',
-    icon: 'solar:case-bold-duotone',
-    children: [
-      {
-        label: 'form',
-        path: '/form'
-      },
-      {
-        label: 'tabel',
-        path: '/table'
-      },
-      {
-        label: 'modal',
-        path: '/transaksi-add'
-      },
-      {
-        label: 'card',
-        path: '/transaksi-add'
-      }
-    ]
-  },
-  {
-    label: 'Pages',
-    icon: 'solar:file-bold-duotone',
-    children: [
-      {
-        label: 'login 1',
-        path: '/login-one'
-      },
-      {
-        label: 'login 2',
-        path: '/login-two'
-      },
-      {
-        label: '404',
-        path: '/login-two'
-      },
-      {
-        label: '500',
-        path: '/login-two'
-      }
-    ]
-  }
+  // {
+  //   label: 'Pengaturan',
+  //   name: 'setting',
+  //   icon: 'solar:settings-bold-duotone',
+  //   children: [
+  //     {
+  //       label: 'Kontak',
+  //       path: '/transaksi'
+  //     },
+  //     {
+  //       label: 'Sosial',
+  //       path: '/transaksi-add'
+  //     }
+  //   ]
+  // }
 ];
 
 export default menus;

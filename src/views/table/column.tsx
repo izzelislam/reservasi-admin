@@ -35,7 +35,7 @@ export const columns = [
     enableSorting: false,
     cell: () => 
     <div className='flex items-center gap-2'>
-      <div className="dropdown dropdown-bottom dropdown-end">
+      <div className="dropdown dropdown-bottom a">
         <Icon role="button" tabIndex={0} icon="solar:menu-dots-bold-duotone" className='text-lg rotate-90' />
         <div tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 py-4 shadow">
           <div className="flex items-center gap-2 cursor-pointer pb-2 border-b border-gray-200">

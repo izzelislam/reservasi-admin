@@ -2,17 +2,26 @@ import { flexRender, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqu
 import { getCoreRowModel } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { useMediaQuery } from 'react-responsive'
 
 
 type Props = {
   data: any
   columns: any
+  attributes?: any
+  loading?: boolean
+  fn?: any,
+  children?: React.ReactNode
 }
 
-const DataTable:React.FC<Props> = ({data, columns}: Props) => {
+const DataTable:React.FC<Props> = ({data, columns, attributes, loading, fn, children}: Props) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [globalFilter, setGlobalFilter] = useState<any>([])
+
+  const isMobile = useMediaQuery({
+    query: '(min-width: 800px)'
+  })
 
   const table = useReactTable({
     data,
@@ -39,14 +48,19 @@ const DataTable:React.FC<Props> = ({data, columns}: Props) => {
   return (
     <div className='flex flex-col gap-4 '>
       {/* searach boc */}
-      <div className='max-w-md flex gap-2 items-center border border-gray-200 rounded-lg focus-within:border-gray-400'>
-        <Icon icon="solar:magnifer-bold-duotone" className='text-2xl mr-1 ml-4' />
-        <input
-          className='w-full h-full px-3 py-2 focus:outline-none rounded-e-lg dark:bg-transparent'
-          value={globalFilter ?? ''}
-          onChange={e => table.setGlobalFilter(String(e.target.value))}
-          placeholder="Search..."
-        />
+      <div className='flex gap-4 items-center justify-between flex-wrap'>
+        <div className='max-w-md flex gap-2 items-center border border-gray-200 rounded-lg focus-within:border-gray-400'>
+          <Icon icon="solar:magnifer-bold-duotone" className='text-2xl mr-1 ml-4' />
+          <input
+            className='w-full h-full px-3 py-2 focus:outline-none rounded-e-lg dark:bg-transparent'
+            value={globalFilter ?? ''}
+            onChange={e => table.setGlobalFilter(String(e.target.value))}
+            placeholder="Search..."
+          />
+        </div>
+        <div>
+          {children}
+        </div>
       </div>
       {/* end search box */}
 
@@ -58,7 +72,7 @@ const DataTable:React.FC<Props> = ({data, columns}: Props) => {
               return (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => ( // map over the headerGroup headers array
-                    <th key={header.id} colSpan={header.colSpan} className="p-6  py-4 text-left text-sm font-semibold uppercase tracking-wider text-gray-400 dark:bg-gray-900">
+                    <th key={header.id} colSpan={header.colSpan} className={`p-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-gray-400 dark:bg-gray-900 ${!isMobile ? 'flex flex-col' : ''}`}>
                       {header.isPlaceholder ? null : (
                         <div
                           {...{
@@ -78,21 +92,32 @@ const DataTable:React.FC<Props> = ({data, columns}: Props) => {
                         </div>
                       )}
                     </th>
-                  ))}
+                  ))} 
                 </tr>
               )
             })}
           </thead>
           <tbody className='bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-600'>
-            {table.getRowModel().rows.map(row => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-6 py-3 whitespace-nowrap">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            
+            {
+              loading ? (
+                <tr>
+                  <td className='flex justify-center items-center py-3 w-full'>
+                    <Icon icon="svg-spinners:180-ring-with-bg" className="text-3xl text-gray-600" />
                   </td>
-                ))}
-              </tr>
-            ))}
+                </tr>
+              ):
+                table.getRowModel().rows.map(row => (
+                  <tr key={row.id} className=''>
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id} className={`px-6 py-3 whitespace-nowrap ${!isMobile ? 'flex flex-col' : ''}`}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+            }
+            
           </tbody>
         </table>
       </div>
@@ -113,21 +138,32 @@ const DataTable:React.FC<Props> = ({data, columns}: Props) => {
             </option>
           ))}
         </select>
+
         <div className="join">
           <button 
-            onClick={() => table.previousPage()}
+            onClick={() => fn(1)}
             disabled={!table.getCanPreviousPage()}
             className="join-item btn">«
           </button>
-          <button className="join-item btn">2</button>
-          <button className="join-item btn btn-disabled">...</button>
-          <button className="join-item btn">99</button>
+          {/* <button className="join-item btn btn-disabled">...</button> */}
+          {
+            Array.from({ length: attributes.last_page }, (_, i) => i + 1).map(pageNumber => (
+              <button 
+                key={pageNumber} 
+                onClick={() => fn(pageNumber)} 
+                className="join-item btn"
+              >
+                {pageNumber}
+              </button>
+            ))
+          }
           <button 
-            onClick={() => table.nextPage()}
+            onClick={() => fn(attributes.last_page)}
             disabled={!table.getCanNextPage()}
             className="join-item btn">»
           </button>
         </div>
+
       </div>
       {/* end pagination */}
     </div>
