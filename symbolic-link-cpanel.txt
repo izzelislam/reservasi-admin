@@ -1,0 +1,1 @@
+ln -s /home/tvwg5988/public_html/reservasi-backend/storage/app/public /home/tvwg5988/public_html/reservasi-backend/public/storage

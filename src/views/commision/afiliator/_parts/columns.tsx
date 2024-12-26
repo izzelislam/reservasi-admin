@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import NumberToIdr from "../../../../lib/idr-formated"
 import PaidButton from "../../../../components/paid-button"
+import { useAuthStore } from "../../../../store/use-auth-store"
 
 export const columnHelper = createColumnHelper<any>()
 
@@ -51,13 +52,23 @@ export const comissionColumns = [
     header: 'Action',
     enableSorting: false,
     cell: (info) => 
+      <Action id={info.row.original.id} />
+  })
+]
+
+
+
+const Action = ({id}:any) => {
+  const {role} = useAuthStore()
+  return (
+    role === 'admin' &&
     <div className='flex items-center gap-2'>
-      <div className="dropdown dropdown-bottom a">
+      <div className="dropdown dropdown-bottom dropdown-start lg:dropdown-end md:dropdown-end">
         <Icon role="button" tabIndex={0} icon="solar:menu-dots-bold-duotone" className='text-lg rotate-90' />
         <div tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 py-4 shadow">
-          <PaidButton id={info.row.original.id} />
+          <PaidButton id={id} />
         </div>
       </div> 
     </div>
-  })
-]
+  )
+}

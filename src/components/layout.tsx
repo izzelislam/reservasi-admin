@@ -20,7 +20,7 @@ const Layout: React.FC<Props> = ({children} : Props) => {
   const [menuName, setMenuName] = React.useState<string>('');
   const [isSidebarOpen, setIsSidebarOpen] = React.useState<boolean>(false);
   const [thme, setTheme] = React.useState<any>(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
-  const {getProfile, user, logout} = useAuthStore()
+  const {getProfile, user, logout, role} = useAuthStore()
   const [showLogoutModal, setShowLogoutModal] = React.useState<boolean>(false);
   const isMobile = useMediaQuery({ maxWidth: 900 });
 
@@ -105,27 +105,33 @@ const Layout: React.FC<Props> = ({children} : Props) => {
             {
               menus.map((menu: any, index: number) => {
                 if (menu.children) {
-                  return (
-                    <MenuMultiple
-                      key={index}
-                      label={menu.label}
-                      icon={menu.icon}
-                      children={menu.children}
-                      handleToogle={() => handleOpenDropdown(menu.name)}
-                      isOpenDropdown={ menu.name === menuName && isOpenDropdown ? true : false}
-                      isActive={menu.name === menuName ? true : false}
-                    />
-                  )
+                  if (menu.avaibility.includes(role)) {
+                    return (
+                      <MenuMultiple
+                        key={index}
+                        label={menu.label}
+                        icon={menu.icon}
+                        children={menu.children}
+                        visibility={menu.avaibility}
+                        role={role}
+                        handleToogle={() => handleOpenDropdown(menu.name)}
+                        isOpenDropdown={ menu.name === menuName && isOpenDropdown ? true : false}
+                        isActive={menu.name === menuName ? true : false}
+                      />
+                    )
+                  }
                 } else{
-                  return (
-                    <MenuSingle
-                      key={index}
-                      label={menu.label}
-                      icon={menu.icon}
-                      path={menu.path}
-                      isActive={menu.name === menuName ? true : false}
-                    />
-                  )
+                  if (menu.avaibility.includes(role)) {
+                    return (
+                      <MenuSingle
+                        key={index}
+                        label={menu.label}
+                        icon={menu.icon}
+                        path={menu.path}
+                        isActive={menu.name === menuName ? true : false}
+                      />
+                    )
+                  }
                 }
               })
             }
@@ -154,6 +160,8 @@ const Layout: React.FC<Props> = ({children} : Props) => {
                         label={menu.label}
                         icon={menu.icon}
                         children={menu.children}
+                        visibility={menu.avaibility}
+                        role={role}
                         handleToogle={() => handleOpenDropdown(menu.name)}
                         isOpenDropdown={ menu.name === menuName && isOpenDropdown ? true : false}
                         isActive={menu.name === menuName ? true : false}

@@ -28,6 +28,7 @@ const CheckinOrderManual = ({onClose}:any) => {
   const [resSearch, setResSearch] = useState<any>([])
   const [selectedRoom, setSelectedRoom] = useState<any>(null)
   const {getActivitys} = useActivityStore()
+  const [checkinNow, setCheckinNow] = useState<any>(0)
 
   const onChange = async (dates:any) => {
     
@@ -39,6 +40,7 @@ const CheckinOrderManual = ({onClose}:any) => {
       const res = await api.get(`/admin/room-search?start_booking=${dateFilter(start)}&end_booking=${dateFilter(end)}`)
       setResSearch(res.data)
     } catch (error:any) {
+      setResSearch([])
       // toast.error(objectToText(error.data.message))
     }
     // if (start < end){
@@ -76,6 +78,7 @@ const CheckinOrderManual = ({onClose}:any) => {
         room_id: selectedRoom.id,
         start_booking: dateFilter(startDate),
         end_booking: dateFilter(endDate),
+        is_check_in_now: checkinNow
       }
 
       await api.post("/admin/order-manual", payload)
@@ -199,8 +202,14 @@ const CheckinOrderManual = ({onClose}:any) => {
                   error={errors.phone?.message}
                 />
 
+                <div className='flex items-center gap-2'>
+                  <input value={checkinNow} onChange={(e) => setCheckinNow(e.target.checked)} id='checkinNow' type="checkbox"  className="checkbox checkbox-sm" />
+                  <label htmlFor="checkinNow">Klik Jika Checkin Sekarang</label>
+                </div>
+
+
                 <Button
-                  title='Order dan Checkin'
+                  title='Order '
                   bg='bg-green-500'
                   type='submit'
                 />

@@ -9,9 +9,11 @@ type Props = {
   handleToogle: () => void
   isOpenDropdown: boolean
   isActive?: boolean
+  visibility:any
+  role:any
 }
 
-const MenuMultiple:React.FC<Props> = ({label, icon, children, handleToogle, isOpenDropdown, isActive}: Props) => {
+const MenuMultiple:React.FC<Props> = ({label, icon, children, handleToogle, isOpenDropdown, isActive, role}: Props) => {
 
 
   return (
@@ -26,14 +28,18 @@ const MenuMultiple:React.FC<Props> = ({label, icon, children, handleToogle, isOp
       </div>
       <div className={`menu-multi-child ${isOpenDropdown ? 'max-h-auto opacity-100' : 'h-0 opacity-0 ' }`}>
           <ul>
-            {children.map((child: any, index: number) => (
-              <Link to={child.path}>
-                <li key={index}>
-                  <Icon icon="lucide:dot" className='text-xl' />
-                  <p>{child.label}</p>
-                </li>
-              </Link>
-            ))}
+            {children.map((child: any, index: number) => {
+              if (child.avaibility.includes(role)){
+                return (
+                  <Link to={child.path}>
+                    <li key={index}>
+                      <Icon icon="lucide:dot" className='text-xl' />
+                      <p>{child.label}</p>
+                    </li>
+                  </Link>
+                )
+              }
+            })}
           </ul>
       </div>
     </>

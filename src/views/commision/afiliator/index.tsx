@@ -56,6 +56,7 @@ const CommisionPage = () => {
     } catch (error:any) {
       toast.error(objectToText(error.data.message))
     }
+    await init()
     handleClose()
     reset()
   }

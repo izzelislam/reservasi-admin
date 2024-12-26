@@ -1,5 +1,8 @@
 import axios from "axios"
 import { baseUrl } from "../constant/values"
+import Cookies from 'js-cookie'
+
+const token = Cookies.get('token')
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -9,16 +12,16 @@ const api = axios.create({
 })
 
 // with credentials
-api.defaults.withCredentials = true
+// api.defaults.withCredentials = true
 
 // set base url
 
 //  with credentials
 
 // set token if exist in cookies
-// if (token) {
-//   api.defaults.headers.common["Authorization"] = `Bearer ${token}`
-// }
+if (token) {
+  api.defaults.headers.common["Authorization"] = `${token}`
+}
 
 // set loading to true before request
 api.interceptors.request.use((config) => {
@@ -32,6 +35,7 @@ api.interceptors.response.use(
   },
   (error) => {
     return Promise.reject(error.response)
+    // return Promise.reject(error)
   }
 )
 

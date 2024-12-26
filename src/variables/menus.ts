@@ -4,6 +4,7 @@ type Menu = {
   name?: string;
   path?: string;
   children?: Menu[];
+  avaibility?: any
 }
 
 const menus: Menu[] = [
@@ -11,26 +12,31 @@ const menus: Menu[] = [
     label: 'Dashboard',
     name : 'dashboard', 
     icon: 'solar:home-2-bold-duotone',
-    path: '/dashboard'
+    path: '/dashboard',
+    avaibility: ['admin', 'afiliator']
   },
   {
     label: 'Checkin/Out',
     name: 'checkin',
     icon: 'solar:inbox-archive-bold-duotone',
-    path: '/check-in'
+    path: '/check-in',
+    avaibility: ['admin', 'afiliator']
   },
   {
     label: 'Kamar',
     name: 'room',
     icon: 'solar:bed-bold-duotone',
+    avaibility: ['admin'],
     children: [
       {
         label: 'Daftar Kamar',
-        path: '/room'
+        path: '/room',
+        avaibility: ['admin']
       },
       {
         label: 'Tambah Kamar',
-        path: '/room/create'
+        path: '/room/create',
+        avaibility: ['admin']
       }
     ]
   },
@@ -38,14 +44,17 @@ const menus: Menu[] = [
     label: 'Transaksi',
     name: 'order',
     icon: 'solar:cart-3-bold-duotone',
+    avaibility: ['admin'],
     children: [
       {
         label: 'Transaksi',
-        path: '/order/transaction'
+        path: '/order/transaction',
+        avaibility: ['admin']
       },
       {
         label: 'Laporan',
-        path: '/order/report'
+        path: '/order/report',
+        avaibility: ['admin']
       }
     ]
   },
@@ -53,14 +62,17 @@ const menus: Menu[] = [
     label: 'Komisi',
     name: 'comission',
     icon: 'solar:money-bag-bold-duotone',
+    avaibility: ['admin', 'afiliator'],
     children: [
       {
         label: 'Afiliator',
-        path: '/comission/afiliator'
+        path: '/comission/afiliator',
+        avaibility: ['admin', 'afiliator']
       },
       {
         label: 'Platform',
-        path: '/comission/vendor'
+        path: '/comission/vendor',
+        avaibility: ['admin']
       },
     ]
   },
@@ -68,18 +80,22 @@ const menus: Menu[] = [
     label: 'Penguna',
     name: 'user',
     icon: 'solar:users-group-rounded-bold-duotone',
+    avaibility: ['admin'],
     children: [
       {
         label: 'Admin',
-        path: '/user/admin'
+        path: '/user/admin',
+        avaibility: ['admin']
       },
       {
         label: 'Afiliator',
-        path: '/user/afiliator'
+        path: '/user/afiliator',
+        avaibility: ['admin']
       },
       {
         label: 'Pelanggan',
-        path: '/user/customer'
+        path: '/user/customer',
+        avaibility: ['admin']
       }
     ]
   },
@@ -87,14 +103,17 @@ const menus: Menu[] = [
     label: 'Post',
     name: 'post',
     icon: 'solar:signpost-2-bold-duotone',
+    avaibility: ['admin'],
     children: [
       {
         label: 'Berita',
-        path: '/post/info'
+        path: '/post/info',
+        avaibility: ['admin']
       },
       {
         label: 'Kategory',
-        path: '/post/category'
+        path: '/post/category',
+        avaibility: ['admin']
       }
     ]
   },

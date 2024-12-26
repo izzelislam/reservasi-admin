@@ -85,7 +85,7 @@ export const orderColumns = [
     enableSorting: false,
     cell: (info) => 
     <div className='flex items-center gap-2'>
-      <div className="dropdown dropdown-bottom a">
+      <div className="dropdown dropdown-bottom dropdown-start lg:dropdown-end md:dropdown-end">
         <Icon role="button" tabIndex={0} icon="solar:menu-dots-bold-duotone" className='text-lg rotate-90' />
         <div tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 py-4 shadow">
           

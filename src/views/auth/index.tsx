@@ -20,6 +20,8 @@ const LoginPage: React.FC = () => {
   const { login, loading } = useAuthStore()
   const router = useNavigate()
 
+
+
   const {register, handleSubmit, formState: {errors} } = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
@@ -32,7 +34,6 @@ const LoginPage: React.FC = () => {
     try {
       const res = await login(data)
       
-      
       router('/dashboard')
       if (res){
         toast.success(res.message)
@@ -40,9 +41,8 @@ const LoginPage: React.FC = () => {
       
       console.log(res)
     } catch (error:any) { 
-      console.log(error.response.data.message)
-      toast.error(error.response.data.message)
- 
+      console.log(error.data.message)
+      toast.error(error.data.message)
     }
   }
 
@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
         <div className='mb-4'>
           <h1 className='text-xl font-semibold text-gray-600 flex items-center mb-2'> 
             <Icon icon="solar:login-3-bold-duotone" className='text-xl mr-1' />
-            Halaman Login 
+            Halaman Login ne
           </h1>
           <p className='text-gray-500 text-sm'>Silahkan login mengunakan email/ no telepon dan password anda</p>
         </div>
