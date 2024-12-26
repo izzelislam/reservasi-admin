@@ -1,6 +1,6 @@
 // const baseUrl = "https://geni-reservasi.tvw-group.com/api/v1"
-const baseUrl = "https://geni.kentanglomot.my.id/api/v1"
-// const baseUrl = "http://localhost:8000/api/v1"
+// const baseUrl = "https://geni.kentanglomot.my.id/api/v1"
+const baseUrl = "http://localhost:8000/api/v1"
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
